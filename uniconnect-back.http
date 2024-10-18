@@ -1,0 +1,6 @@
+@uniconnect_back_HostAddress = http://localhost:5172
+
+GET {{uniconnect_back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
