@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using UniConnect.Application.DTOs;
 using UniConnect.Application.Interfaces;
 
 namespace UniConnect.API.Controllers;
@@ -9,10 +10,24 @@ public class EventController(IEventService eventService) : ControllerBase
 {
     private readonly IEventService _eventService = eventService;
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] string description)
+    [HttpGet]
+    public async Task<IActionResult> List()
     {
-        await _eventService.Create(description);
+        var events = await _eventService.List();
+        return Ok(events);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateEventDto createEventDto)
+    {
+        await _eventService.Create(createEventDto);
+        return Ok();
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update(UpdateEventDto updateEventDto)
+    {
+        await _eventService.Update(updateEventDto);
         return Ok();
     }
 
