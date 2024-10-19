@@ -7,4 +7,5 @@ public class Message
     public User? User { get; set; }
     public required string Content { get; set; }
     public required DateTime SentAt { get; set; }
+    public required bool Enabled { get; set; }
 }
