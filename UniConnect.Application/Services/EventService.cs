@@ -14,6 +14,9 @@ public class EventService(IEventRepository eventRepository): IEventService
     }
 
     public async Task Create(CreateEventDto createEventDto) {
+        if (string.IsNullOrWhiteSpace(createEventDto.Description))
+            throw new Exception("A descrição do evento não pode ser vazia.");
+        
         var newEvent = new Event {
             Description = createEventDto.Description,
             CreatedAt = DateTime.Now,
