@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniConnect.Infrastructure.Data;
 
@@ -10,33 +11,14 @@ using UniConnect.Infrastructure.Data;
 namespace UniConnect.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241019042823_AddEnabledInUser")]
+    partial class AddEnabledInUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
-
-            modelBuilder.Entity("UniConnect.Domain.Entities.Event", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("Enabled")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
-                });
 
             modelBuilder.Entity("UniConnect.Domain.Entities.Message", b =>
                 {
@@ -47,9 +29,6 @@ namespace UniConnect.Infrastructure.Migrations
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<bool>("Enabled")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("SentAt")
                         .HasColumnType("TEXT");
@@ -76,16 +55,11 @@ namespace UniConnect.Infrastructure.Migrations
                     b.Property<bool>("Enabled")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("EventId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
 
                     b.ToTable("Users");
                 });
@@ -99,17 +73,6 @@ namespace UniConnect.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UniConnect.Domain.Entities.User", b =>
-                {
-                    b.HasOne("UniConnect.Domain.Entities.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
                 });
 #pragma warning restore 612, 618
         }
