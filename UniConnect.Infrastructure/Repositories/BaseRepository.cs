@@ -15,7 +15,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         _dbSet = _context.Set<TEntity>();
     }
     
-    public virtual async Task<TEntity?> GetByIdAsync(int id)
+    public virtual async Task<TEntity?> GetByIdAsync(long id)
     {
         return await _dbSet.FindAsync(id);
     }
@@ -53,15 +53,5 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
         _ = _dbSet.Remove(entity);
         _ = await _context.SaveChangesAsync();
-    }
-
-    public virtual async Task<int> ExecuteRawSqlAsync(string sql)
-    {
-        return await _context.Database.ExecuteSqlRawAsync(sql);
-    }
-
-    public virtual async Task<IEnumerable<TEntity>> FromRawSqlAsync(string sql)
-    {
-        return await _dbSet.FromSqlRaw(sql).ToListAsync();
     }
 }
