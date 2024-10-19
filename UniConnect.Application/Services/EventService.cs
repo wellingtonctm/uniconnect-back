@@ -33,6 +33,15 @@ public class EventService(IEventRepository eventRepository): IEventService
 
         var eventToUpdate = await eventRepository.GetByIdAsync(updateEventDto.Id) ?? throw new Exception("Evento não encontrado.");
         eventToUpdate.Description = updateEventDto.Description;
+
+        if (updateEventDto.Enabled) {
+            var enabledEvent = await eventRepository.FindAsync(x => x.Id != updateEventDto.Id && x.Enabled == true);
+
+            if (enabledEvent is not null)
+                throw new Exception("Outro evento já está aberto.");
+        }
+
+        eventToUpdate.Enabled = updateEventDto.Enabled;
         await eventRepository.UpdateAsync(eventToUpdate);
 
     }
