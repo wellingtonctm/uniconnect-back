@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniConnect.Domain", "UniConnect.Domain\UniConnect.Domain.csproj", "{8865FEDB-1F81-436A-A028-3CD6B5076904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniConnect.Application", "UniConnect.Application\UniConnect.Application.csproj", "{89D2C606-5181-42A1-A5F2-E9779372EC9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniConnect.Infrastructure", "UniConnect.Infrastructure\UniConnect.Infrastructure.csproj", "{3D8F6D22-97E4-424C-9E48-4D64483F295A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniConnect.API", "UniConnect.API\UniConnect.API.csproj", "{E965BB29-CACA-49D1-911F-44CC7EBC543E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8865FEDB-1F81-436A-A028-3CD6B5076904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8865FEDB-1F81-436A-A028-3CD6B5076904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8865FEDB-1F81-436A-A028-3CD6B5076904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8865FEDB-1F81-436A-A028-3CD6B5076904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D2C606-5181-42A1-A5F2-E9779372EC9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D2C606-5181-42A1-A5F2-E9779372EC9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D2C606-5181-42A1-A5F2-E9779372EC9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D2C606-5181-42A1-A5F2-E9779372EC9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D8F6D22-97E4-424C-9E48-4D64483F295A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D8F6D22-97E4-424C-9E48-4D64483F295A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D8F6D22-97E4-424C-9E48-4D64483F295A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D8F6D22-97E4-424C-9E48-4D64483F295A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E965BB29-CACA-49D1-911F-44CC7EBC543E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E965BB29-CACA-49D1-911F-44CC7EBC543E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E965BB29-CACA-49D1-911F-44CC7EBC543E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E965BB29-CACA-49D1-911F-44CC7EBC543E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
