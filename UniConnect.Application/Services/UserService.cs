@@ -5,7 +5,7 @@ using UniConnect.Domain.Repositories;
 
 namespace UniConnect.Application.Services;
 
-public class UserService(IUserRepository userRepository, IEventRepository eventRepository)
+public class UserService(IUserRepository userRepository, IEventRepository eventRepository) : IUserService
 {
     private readonly IUserRepository userRepository = userRepository;
     private readonly IEventRepository eventRepository = eventRepository;
