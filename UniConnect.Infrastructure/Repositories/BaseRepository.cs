@@ -25,7 +25,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return await _dbSet.ToListAsync();
     }
 
-    public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await _dbSet.Where(predicate).FirstOrDefaultAsync();
+    }
+
+    public virtual async Task<IEnumerable<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate)
     {
         return await _dbSet.Where(predicate).ToListAsync();
     }
