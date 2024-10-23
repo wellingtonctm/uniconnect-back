@@ -36,7 +36,7 @@ COPY --from=publish /app/publish .
 COPY --from=migration /app/publish/*.db .
 
 # Define as variáveis de ambiente, se necessário
-# ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_ENVIRONMENT=Production
 
 # Define o comando para iniciar a aplicação
 ENTRYPOINT ["dotnet", "UniConnect.API.dll"]

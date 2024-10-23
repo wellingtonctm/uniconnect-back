@@ -14,7 +14,7 @@ public static class CorsConfig
 
             options.AddPolicy("Production", builder =>
                 builder
-                    .WithOrigins("https://localhost:9000")
+                    .WithOrigins("https://uniconnect-front.up.railway.app/")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });
