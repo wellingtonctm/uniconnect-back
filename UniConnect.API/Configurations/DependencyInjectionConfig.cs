@@ -1,6 +1,8 @@
 ﻿using UniConnect.Application.Interfaces;
 using UniConnect.Application.Services;
+using UniConnect.Domain.Messaging;
 using UniConnect.Domain.Repositories;
+using UniConnect.Infrastructure.Messaging;
 using UniConnect.Infrastructure.Repositories;
 
 namespace UniConnect.API.Configurations;
@@ -20,6 +22,7 @@ public static class DependencyInjectionConfig
         builder.Services.AddScoped<IEventService, EventService>();
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IMessageService, MessageService>();
+        builder.Services.AddSingleton<IWebSocketConnectionManager, WebSocketConnectionManager>();
         return builder;
     }
 }

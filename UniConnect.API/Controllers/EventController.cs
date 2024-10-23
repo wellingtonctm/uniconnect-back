@@ -10,6 +10,13 @@ public class EventController(IEventService eventService) : ControllerBase
 {
     private readonly IEventService _eventService = eventService;
 
+    [HttpGet("Messages")]
+    public async Task<IActionResult> ListMessages()
+    {
+        var messages = await _eventService.ListMessages();
+        return Ok(messages);
+    }
+    
     [HttpGet]
     public async Task<IActionResult> List()
     {

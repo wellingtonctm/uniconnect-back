@@ -1,21 +1,44 @@
 using UniConnect.Application.DTOs;
 using UniConnect.Application.Interfaces;
 using UniConnect.Domain.Entities;
+using UniConnect.Domain.Messaging;
 using UniConnect.Domain.Repositories;
 
 namespace UniConnect.Application.Services;
 
-public class UserService(IUserRepository userRepository, IEventRepository eventRepository) : IUserService
+public class UserService(IUserRepository userRepository, IEventRepository eventRepository, IMessageRepository messageRepository) : IUserService
 {
     private readonly IUserRepository userRepository = userRepository;
     private readonly IEventRepository eventRepository = eventRepository;
+    private readonly IMessageRepository messageRepository = messageRepository;
+
+    public async Task<IEnumerable<MessageDto>> ListMessages(long id)
+    {
+        var user = await userRepository.FindAsync(x => x.Id == id && x.Enabled) ?? throw new Exception("Usuário não encontrado.");
+        var messages = await messageRepository.FindAllAsync(x => x.UserId == id && x.Enabled);
+
+        var messageDtos = new List<MessageDto>();
+
+        foreach (var message in messages)
+        {
+            messageDtos.Add(new MessageDto
+            {
+                Id = message.Id,
+                Message = message.Content,
+                SentDate = message.SentAt,
+                User = message.User?.Name
+            });
+        }
+
+        return messageDtos.OrderBy(x => x.SentDate);
+    }
 
     public async Task<IEnumerable<User>> List()
     {
         return await userRepository.GetAllAsync();
     }
 
-    public async Task Create(CreateUserDto createUserDto)
+    public async Task<User> Create(CreateUserDto createUserDto)
     {
         var enabledEvent = await eventRepository.FindAsync(x => x.Enabled == true) ?? throw new Exception("Não há eventos abertos.");
 
@@ -31,6 +54,7 @@ public class UserService(IUserRepository userRepository, IEventRepository eventR
         };
 
         await userRepository.AddAsync(newUser);
+        return newUser;
     }
 
     public async Task Update(UpdateUserDto updateUserDto)

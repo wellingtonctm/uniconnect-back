@@ -1,15 +1,19 @@
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using UniConnect.Application.DTOs;
 using UniConnect.Application.Interfaces;
 using UniConnect.Domain.Entities;
+using UniConnect.Domain.Messaging;
 using UniConnect.Domain.Repositories;
 
 namespace UniConnect.Application.Services;
 
-public class MessageService(IMessageRepository MessageRepository, IEventRepository eventRepository, IUserRepository userRepository) : IMessageService
+public class MessageService(IMessageRepository MessageRepository, IEventRepository eventRepository, IUserRepository userRepository, IWebSocketConnectionManager connectionManager) : IMessageService
 {
     private readonly IMessageRepository MessageRepository = MessageRepository;
     private readonly IEventRepository eventRepository = eventRepository;
     private readonly IUserRepository userRepository = userRepository;
+    private readonly IWebSocketConnectionManager _connectionManager = connectionManager;
 
     public async Task<IEnumerable<Message>> List()
     {
@@ -36,6 +40,17 @@ public class MessageService(IMessageRepository MessageRepository, IEventReposito
         };
 
         await MessageRepository.AddAsync(newMessage);
+
+
+        var messageJson = JsonSerializer.Serialize(new MessageDto
+        {
+            Id = newMessage.Id,
+            Message = newMessage.Content,
+            SentDate = newMessage.SentAt,
+            User = newMessage.User?.Name
+        });
+
+        await _connectionManager.SendMessageToAll(messageJson);
     }
 
     public async Task Update(UpdateMessageDto updateMessageDto)

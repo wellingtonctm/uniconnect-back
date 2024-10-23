@@ -10,6 +10,13 @@ public class UserController(IUserService userService) : ControllerBase
 {
     private readonly IUserService _userService = userService;
 
+    [HttpGet("{id}/Messages")]
+    public async Task<IActionResult> List(long id)
+    {
+        var messages = await _userService.ListMessages(id);
+        return Ok(messages);
+    }
+    
     [HttpGet]
     public async Task<IActionResult> List()
     {
@@ -20,8 +27,8 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create(CreateUserDto createUserDto)
     {
-        await _userService.Create(createUserDto);
-        return Ok();
+        var user = await _userService.Create(createUserDto);
+        return Ok(user);
     }
 
     [HttpPut]
