@@ -6,12 +6,17 @@ public static class CorsConfig
     {
         builder.Services.AddCors(options =>
         {
-            options.AddDefaultPolicy(builder =>
+            options.AddPolicy("Development", builder =>
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-            );
+                    .AllowAnyHeader());
+
+            options.AddPolicy("Production", builder =>
+                builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
         });
 
         return builder;
