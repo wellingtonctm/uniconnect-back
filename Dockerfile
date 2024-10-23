@@ -23,5 +23,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-# Executa a migration ao iniciar o contêiner
-ENTRYPOINT ["dotnet", "UniConnect.API.dll"]
+# Executa o script de inicialização
+COPY entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]
