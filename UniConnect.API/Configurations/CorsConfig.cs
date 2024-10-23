@@ -6,17 +6,12 @@ public static class CorsConfig
     {
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("Development", builder =>
+            options.AddDefaultPolicy(builder =>
                 builder
                     .AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
-
-            options.AddPolicy("Production", builder =>
-                builder
-                    .WithOrigins("https://uniconnect-front.up.railway.app")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+            );
         });
 
         return builder;
