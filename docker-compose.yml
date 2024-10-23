@@ -1,0 +1,21 @@
+services:
+  uniconnect:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    volumes:
+      - ./UniConnect.API/uniconnect.db:/app/uniconnect.db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - migrations
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["dotnet", "ef", "database", "update", "--project", "UniConnect.Infrastructure"]
+    volumes:
+      - ./UniConnect.API/uniconnect.db:/app/uniconnect.db
