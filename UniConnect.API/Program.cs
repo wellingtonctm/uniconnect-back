@@ -1,5 +1,8 @@
+using DotNetEnv;
 using UniConnect.API.Configurations;
 using UniConnect.API.Middlewares;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 

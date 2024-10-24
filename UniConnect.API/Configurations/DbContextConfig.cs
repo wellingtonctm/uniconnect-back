@@ -18,10 +18,6 @@ public static class DbContextConfig
         builder.Services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(connectionString));
 
-        // builder.Services.AddDbContext<AppDbContext>(
-        //    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-        // );
-
         return builder;
     }
 }
