@@ -44,7 +44,7 @@ public class EventService(IEventRepository eventRepository, IUserRepository user
         var newEvent = new Event
         {
             Description = createEventDto.Description,
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTime.UtcNow,
             Enabled = false
         };
 

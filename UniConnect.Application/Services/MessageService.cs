@@ -35,7 +35,7 @@ public class MessageService(IMessageRepository MessageRepository, IEventReposito
         {
             UserId = createMessageDto.UserId,
             Content = createMessageDto.Content,
-            SentAt = DateTime.Now,
+            SentAt = DateTime.UtcNow,
             Enabled = true
         };
 

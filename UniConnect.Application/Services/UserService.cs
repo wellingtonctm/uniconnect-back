@@ -49,7 +49,7 @@ public class UserService(IUserRepository userRepository, IEventRepository eventR
         {
             EventId = enabledEvent.Id,
             Name = createUserDto.Name,
-            CreatedAt = DateTime.Now,
+            CreatedAt = DateTime.UtcNow,
             Enabled = true
         };
 
