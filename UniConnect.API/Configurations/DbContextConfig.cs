@@ -7,9 +7,20 @@ public static class DbContextConfig
 {
     public static WebApplicationBuilder AddDbContextConfig(this WebApplicationBuilder builder)
     {
-        builder.Services.AddDbContext<AppDbContext>(
-           options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-        );
+        var host = Environment.GetEnvironmentVariable("PGHOST");
+        var port = Environment.GetEnvironmentVariable("PGPORT");
+        var user = Environment.GetEnvironmentVariable("PGUSER");
+        var password = Environment.GetEnvironmentVariable("PGPASSWORD");
+        var database = Environment.GetEnvironmentVariable("PGDATABASE");
+
+        var connectionString = $"Host={host};Port={port};Username={user};Password={password};Database={database};";
+
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(connectionString));
+
+        // builder.Services.AddDbContext<AppDbContext>(
+        //    options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
+        // );
 
         return builder;
     }
