@@ -6,15 +6,13 @@ public static class CorsConfig
     {
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("Development", builder =>
-                builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+            var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? ["*"];
 
-            options.AddPolicy("Production", builder =>
+            Console.WriteLine(string.Join(", ", allowedOrigins));
+
+            options.AddDefaultPolicy(builder =>
                 builder
-                    .AllowAnyOrigin()
+                    .WithOrigins(allowedOrigins)
                     .AllowAnyMethod()
                     .AllowAnyHeader());
         });

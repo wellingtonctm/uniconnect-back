@@ -17,14 +17,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors("Development");
-}
-else
-{
-    app.UseCors("Production");
-}
+app.UseCors();
 
 app.UseHttpsRedirection();
 
