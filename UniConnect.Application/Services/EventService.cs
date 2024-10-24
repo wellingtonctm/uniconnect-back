@@ -44,6 +44,7 @@ public class EventService(IEventRepository eventRepository, IUserRepository user
         var newEvent = new Event
         {
             Description = createEventDto.Description,
+            LayoutNumberCols = createEventDto.LayoutNumberCols,
             CreatedAt = DateTime.UtcNow,
             Enabled = false
         };
@@ -58,6 +59,7 @@ public class EventService(IEventRepository eventRepository, IUserRepository user
 
         var eventToUpdate = await eventRepository.GetByIdAsync(updateEventDto.Id) ?? throw new Exception("Evento não encontrado.");
         eventToUpdate.Description = updateEventDto.Description;
+        eventToUpdate.LayoutNumberCols = updateEventDto.LayoutNumberCols;
 
         if (updateEventDto.Enabled)
         {
@@ -72,6 +74,29 @@ public class EventService(IEventRepository eventRepository, IUserRepository user
 
     }
 
+    public async Task Enable(long id)
+    {
+        var eventToEnable = await eventRepository.GetByIdAsync(id) ?? throw new Exception("Evento não encontrado.");
+
+        if (eventToEnable.Enabled)
+        {
+            var enabledEvent = await eventRepository.FindAsync(x => x.Id != eventToEnable.Id && x.Enabled == true);
+
+            if (enabledEvent is not null)
+                throw new Exception("Outro evento já está aberto.");
+        }
+
+        eventToEnable.Enabled = true;
+        await eventRepository.UpdateAsync(eventToEnable);
+    }
+
+    public async Task Disable(long id)
+    {
+        var eventToDisable = await eventRepository.GetByIdAsync(id) ?? throw new Exception("Evento não encontrado.");
+        eventToDisable.Enabled = false;
+        await eventRepository.UpdateAsync(eventToDisable);
+    }
+    
     public async Task Delete(long id)
     {
         var eventToDelete = await eventRepository.GetByIdAsync(id) ?? throw new Exception("Evento não encontrado.");

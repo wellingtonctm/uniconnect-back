@@ -12,8 +12,8 @@ using UniConnect.Infrastructure.Data;
 namespace UniConnect.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241024204528_CreateConfigurationsTable")]
-    partial class CreateConfigurationsTable
+    [Migration("20241024224421_AddLayoutColsNumberToEvents")]
+    partial class AddLayoutColsNumberToEvents
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,12 +36,6 @@ namespace UniConnect.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("EventId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("MasonryLayoutCols")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.ToTable("Configurations");
@@ -63,6 +57,9 @@ namespace UniConnect.Infrastructure.Migrations
 
                     b.Property<bool>("Enabled")
                         .HasColumnType("boolean");
+
+                    b.Property<int?>("LayoutNumberCols")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

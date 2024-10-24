@@ -8,5 +8,7 @@ public interface IEventService {
     Task<IEnumerable<Event>> List();
     Task Create(CreateEventDto createEventDto);
     Task Update(UpdateEventDto updateEventDto);
+    Task Enable(long id);
+    Task Disable(long id);
     Task Delete(long id);
 }
