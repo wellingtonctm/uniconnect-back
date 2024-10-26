@@ -24,6 +24,13 @@ public class UserController(IUserService userService) : ControllerBase
         return Ok(users);
     }
 
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(long id)
+    {
+        var users = await _userService.Get(id);
+        return Ok(users);
+    }
+
     [HttpPost]
     public async Task<IActionResult> Create(CreateUserDto createUserDto)
     {
@@ -35,6 +42,20 @@ public class UserController(IUserService userService) : ControllerBase
     public async Task<IActionResult> Update(UpdateUserDto updateUserDto)
     {
         await _userService.Update(updateUserDto);
+        return Ok();
+    }
+
+    [HttpPut("Enable/{id}")]
+    public async Task<IActionResult> Enable(long id)
+    {
+        await _userService.Enable(id);
+        return Ok();
+    }
+
+    [HttpPut("Disable/{id}")]
+    public async Task<IActionResult> Disable(long id)
+    {
+        await _userService.Disable(id);
         return Ok();
     }
 

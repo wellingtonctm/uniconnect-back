@@ -6,13 +6,14 @@ public static class CorsConfig
     {
         var allowedOrigins = builder.Configuration.GetValue<string>("CorsAllowedOrigins");
 
-        Console.WriteLine($"CorsAllowedOrigins: {allowedOrigins}");
+        if (string.IsNullOrWhiteSpace(allowedOrigins))
+            allowedOrigins = "*";
 
         builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(policy =>
             {
-                if (string.IsNullOrWhiteSpace(allowedOrigins))
+                if (allowedOrigins == "*")
                     policy.AllowAnyOrigin();
                 else
                     policy.WithOrigins(allowedOrigins.Split(','));
@@ -21,6 +22,7 @@ public static class CorsConfig
             });
         });
 
+        Console.WriteLine($"CorsAllowedOrigins: {allowedOrigins}");
         return builder;
     }
 }

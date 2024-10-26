@@ -6,36 +6,73 @@ using UniConnect.Domain.Repositories;
 
 namespace UniConnect.Application.Services;
 
-public class UserService(IUserRepository userRepository, IEventRepository eventRepository, IMessageRepository messageRepository) : IUserService
+public class UserService(IUserRepository userRepository, IEventRepository eventRepository, IMessageRepository messageRepository, IWebSocketConnectionManager connectionManager) : IUserService
 {
     private readonly IUserRepository userRepository = userRepository;
     private readonly IEventRepository eventRepository = eventRepository;
     private readonly IMessageRepository messageRepository = messageRepository;
+    private readonly IWebSocketConnectionManager _connectionManager = connectionManager;
 
-    public async Task<IEnumerable<MessageDto>> ListMessages(long id)
+    public async Task<UserItemDto> Get(long id)
     {
-        var user = await userRepository.FindAsync(x => x.Id == id && x.Enabled) ?? throw new Exception("Usuário não encontrado.");
-        var messages = await messageRepository.FindAllAsync(x => x.UserId == id && x.Enabled);
+        var user = await userRepository.GetByIdAsync(id) ?? throw new Exception("Usuário não encontrado.");
 
-        var messageDtos = new List<MessageDto>();
+        var userDto = new UserItemDto
+        {
+            Id = user.Id,
+            CreatedAt = user.CreatedAt,
+            Enabled = user.Enabled,
+            EventId = user.EventId,
+            Name = user.Name
+        };
+
+        return userDto;
+    }
+
+    public async Task<IEnumerable<MessageItemDto>> ListMessages(long id)
+    {
+        var user = await userRepository.FindAsync(x => x.Id == id) ?? throw new Exception("Usuário não encontrado.");
+        var messages = await messageRepository.FindAllAsync(x => x.UserId == id);
+
+        var messageDtos = new List<MessageItemDto>();
 
         foreach (var message in messages)
         {
-            messageDtos.Add(new MessageDto
+            messageDtos.Add(new MessageItemDto
             {
                 Id = message.Id,
-                Message = message.Content,
-                SentDate = message.SentAt,
-                User = message.User?.Name
+                Content = message.Content,
+                SentAt = message.SentAt,
+                UserName = message.User?.Name,
+                Enabled = message.Enabled,
+                UserId = message.UserId
             });
         }
 
-        return messageDtos.OrderBy(x => x.SentDate);
+        return messageDtos.OrderByDescending(x => x.SentAt);
     }
 
-    public async Task<IEnumerable<User>> List()
+    public async Task<IEnumerable<UserItemDto>> List()
     {
-        return await userRepository.GetAllAsync();
+        var users = await userRepository.GetAllAsync();
+        var items = new List<UserItemDto>();
+
+        foreach (var user in users)
+        {
+            var messages = await messageRepository.FindAllAsync(x => x.UserId == user.Id);
+
+            items.Add(new UserItemDto
+            {
+                Id = user.Id,
+                CreatedAt = user.CreatedAt,
+                Enabled = user.Enabled,
+                EventId = user.EventId,
+                Name = user.Name,
+                MessagesNumber = messages.Count()
+            });
+        }
+
+        return items.OrderByDescending(x => x.CreatedAt);
     }
 
     public async Task<User> Create(CreateUserDto createUserDto)
@@ -66,6 +103,42 @@ public class UserService(IUserRepository userRepository, IEventRepository eventR
         userToUpdate.Name = updateUserDto.Name;
         await userRepository.UpdateAsync(userToUpdate);
 
+    }
+
+    public async Task Enable(long id)
+    {
+        var userToEnable = await userRepository.GetByIdAsync(id) ?? throw new Exception("Usuário não encontrado.");
+        userToEnable.Enabled = true;
+        await userRepository.UpdateAsync(userToEnable);
+
+        var userDto = new UserItemDto
+        {
+            Id = userToEnable.Id,
+            CreatedAt = userToEnable.CreatedAt,
+            Enabled = userToEnable.Enabled,
+            EventId = userToEnable.EventId,
+            Name = userToEnable.Name,
+        };
+
+        await _connectionManager.SendMessageToAll(userDto);
+    }
+
+    public async Task Disable(long id)
+    {
+        var userToDisable = await userRepository.GetByIdAsync(id) ?? throw new Exception("Usuário não encontrado.");
+        userToDisable.Enabled = false;
+        await userRepository.UpdateAsync(userToDisable);
+
+        var userDto = new UserItemDto
+        {
+            Id = userToDisable.Id,
+            CreatedAt = userToDisable.CreatedAt,
+            Enabled = userToDisable.Enabled,
+            EventId = userToDisable.EventId,
+            Name = userToDisable.Name,
+        };
+
+        await _connectionManager.SendMessageToAll(userDto);
     }
 
     public async Task Delete(long id)

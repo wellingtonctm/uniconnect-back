@@ -31,6 +31,20 @@ public class MessageController(IMessageService messageService) : ControllerBase
         return Ok();
     }
 
+    [HttpPut("Enable/{id}")]
+    public async Task<IActionResult> Enable(long id)
+    {
+        await _messageService.Enable(id);
+        return Ok();
+    }
+
+    [HttpPut("Disable/{id}")]
+    public async Task<IActionResult> Disable(long id)
+    {
+        await _messageService.Disable(id);
+        return Ok();
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(long id)
     {

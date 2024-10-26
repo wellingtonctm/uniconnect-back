@@ -10,13 +10,27 @@ public class EventController(IEventService eventService) : ControllerBase
 {
     private readonly IEventService _eventService = eventService;
 
+    [HttpGet("{id}/Users")]
+    public async Task<IActionResult> ListUsers(long id)
+    {
+        var messages = await _eventService.ListUsers(id);
+        return Ok(messages);
+    }
+    
     [HttpGet("Messages")]
     public async Task<IActionResult> ListMessages()
     {
         var messages = await _eventService.ListMessages();
         return Ok(messages);
     }
-    
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(long id)
+    {
+        var ev = await _eventService.Get(id);
+        return Ok(ev);
+    }
+
     [HttpGet]
     public async Task<IActionResult> List()
     {
@@ -39,7 +53,7 @@ public class EventController(IEventService eventService) : ControllerBase
     }
 
     [HttpPut("Enable/{id}")]
-    public async Task<IActionResult> Enable([FromRoute]long id)
+    public async Task<IActionResult> Enable([FromRoute] long id)
     {
         await _eventService.Enable(id);
         return Ok();
